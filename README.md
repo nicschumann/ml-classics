@@ -5,6 +5,6 @@ This repository is a playground in which I'm implementing a few classic function
 
 Super dumb and basic logistic regressor implemented to demonstrate vanilla gradient descent on a linear model, with MSE cost.
 
-## Logistic Regression (numpy-regression.py)
+## Logistic Regression (numpy-classification.py)
 
 Super dumb and basic logistic regressor implemented to demonstrate vanilla gradient descent on a logistic model, with log probability / cross-entropy cost.
