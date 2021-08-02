@@ -58,7 +58,7 @@ def d_cost_d_w1(X):
 fig, (ax1, ax2) = plt.subplots(1, 2)
 
 def plot(X, Y, costs):
-    plt.cla()
+    ax1.cla()
     ax1.set_title('Data')
     ax1.scatter(X, Y, color="blue")
     ax1.plot([-100, 100], [f_true(-100), f_true(100)], color="lightblue")

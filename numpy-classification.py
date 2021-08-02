@@ -72,6 +72,7 @@ def plot():
 
     colors = list(map(lambda x: 'orange' if x == 1.0 else 'blue', Y_test.tolist()))
     pred_colors = list(map(lambda x: 'orange' if x > 0.5 else 'blue', f_model(X_test).tolist()))
+    ax2.cla()
     ax2.set_title('Test Points')
     ax2.scatter(X_test[:, 0], X_test[:, 1], edgecolors=colors, facecolors=pred_colors)
 
