@@ -35,7 +35,7 @@ Y = f_true(X) + np.random.normal(loc=0.0, scale=error_spread, size=(N,))
 w0 = 0 #np.random.normal()
 w1 = 0 #np.random.normal()
 w2 = 0
-alpha = 0.0005
+alpha = 0.0001
 
 # model function
 def f_model(X):
@@ -61,7 +61,7 @@ def d_cost_d_w2(X):
 
 # Monitoring Code
 
-fig, (ax1, ax2) = plt.subplots(1, 2)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
 
 def plot(X, Y, costs):
     ax1.cla()
@@ -77,6 +77,11 @@ def plot(X, Y, costs):
 
     ax2.set_title('Costs')
     ax2.plot(list(range(len(costs))), costs, color="blue")
+
+    ax3.cla()
+    ax3.set_title('True Error')
+    ax3.plot([-10, 10], [0, 0], color='blue')
+    ax3.plot(input, (output_true - output_pred), color='red')
 
     plt.pause(0.25)
 
