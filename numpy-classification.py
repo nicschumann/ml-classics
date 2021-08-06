@@ -18,10 +18,14 @@ b_true = 0.0
 f_true = lambda x: m_true * x + b_true
 
 
+def f_true(x):
+    return w_0 * x * x + w_1 * x + w_2
+
+
 
 # Now, let's generate a candidate dataset. This is just a bunch of random datapoints
 # that follow this rule.
-n_train_samples = 10
+n_train_samples = 50
 n_test_samples = 20
 
 
@@ -38,7 +42,7 @@ Y_test = (f_true(X_test[:, 0]) < X_test[:, 1]).astype('float32')
 w0 = 0
 w1 = 0
 w2 = 0
-alpha = 0.01
+alpha = 0.001
 
 def f_model(X):
     a = w0 * X[:, 0] + w1 * X[:, 1] + w2
@@ -79,7 +83,7 @@ def plot():
     ax3.set_title('Loss')
     ax3.plot(range(len(costs)), costs, color='blue')
 
-    plt.pause(1)
+    plt.pause(2)
 
 
 plot()
