@@ -35,7 +35,7 @@ Y = f_true(X) + np.random.normal(loc=0.0, scale=error_spread, size=(N,))
 w0 = 0 #np.random.normal()
 w1 = 0 #np.random.normal()
 w2 = 0
-alpha = 0.0001
+alpha = 0.0002
 
 # model function
 def f_model(X):
