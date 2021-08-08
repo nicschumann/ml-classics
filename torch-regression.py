@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+
 from torch.optim import SGD
 
 import matplotlib.pyplot as plt
@@ -27,26 +28,27 @@ f_true = lambda X: w0_true * X + w1_true
 # that follow this rule.
 N = 50
 
-X = torch.tensor(np.random.uniform(low=-100, high=100, size=(N,)))
-Y = torch.tensor(f_true(X) + np.random.normal(loc=0.0, scale=error_spread, size=(N,)))
-
+X = 200. * torch.rand(N, 1).type(torch.FloatTensor) - 100.
+Y = f_true(X) + torch.normal(torch.zeros(N, 1), error_spread).type(torch.FloatTensor)
 
 
 # Model
 
-w0 = torch.tensor([0.], requires_grad=True) #np.random.normal()
-w1 = torch.tensor([0.], requires_grad=True) #np.random.normal()
-alpha = 0.005
+alpha = 0.00005
 
 # model function
-def f_model(X, w0, w1):
-    return w0 * X + w1
 
-# cost of model
-def cost(w0, w1):
-    return (1.0 / N) * torch.sum( torch.pow((Y - f_model(X, w0, w1)), 2))
+class Model(torch.nn.Module):
+    def __init__(self):
+        super(Model, self).__init__()
+        self.w1 = torch.tensor([0.0], requires_grad=True)
+        self.w2 = torch.tensor([0.0], requires_grad=True)
 
-optimizer = SGD([w0, w1], lr=alpha)
+    def forward(self, x):
+        return self.w1 * x + self.w2
+
+f_model = Model()
+optimizer = SGD([f_model.w1, f_model.w2], lr=alpha)
 
 
 # Monitoring Code
@@ -57,15 +59,11 @@ def plot(X, Y, costs):
     ax1.cla()
     ax1.set_title('Data')
     ax1.scatter(X, Y, color="blue")
-    ax1.plot([-100, 100], [f_true(-100), f_true(100)], color="lightblue")
 
-    inp = torch.tensor([-100, 100])
-    out = f_model(inp, w0, w1)
+    inp = torch.tensor([[-100.], [100.]])
+    out = f_model(inp)
 
-    print(inp)
-    print([w0, w1])
-    print(out)
-
+    ax1.plot(inp, f_true(inp), color="lightblue")
     ax1.plot(inp.detach().numpy(), out.detach().numpy(), color="red")
 
     ax2.set_title('Costs')
@@ -80,13 +78,14 @@ costs = []
 
 plot(X, Y, costs)
 
-for i in range(10):
+for i in range(1000):
 
+    Y_pred = f_model(X)
+    loss = (Y - Y_pred).pow(2).mean()
+    costs.append(loss.detach().numpy())
 
     optimizer.zero_grad()
-    c = cost(w1, w0)
-    costs.append(c.detach().numpy())
-    c.backward()
+    loss.backward()
     optimizer.step()
 
     plot(X, Y, costs)
